@@ -96,6 +96,26 @@ func (s *Set) Has(items ...interface{}) bool {
 	return has
 }
 
+// HasAny looks for the existence of items passed. It returns false if nothing is
+// passed. For multiple items it returns true if any of the items exist.
+func (s *Set) HasAny(items ...interface{}) bool {
+	// assume checked for empty item, which not exist
+	if len(items) == 0 {
+		return false
+	}
+
+	s.l.RLock()
+	defer s.l.RUnlock()
+
+	has := false
+	for _, item := range items {
+		if _, has = s.m[item]; has {
+			break
+		}
+	}
+	return has
+}
+
 // Size returns the number of items in a set.
 func (s *Set) Size() int {
 	s.l.RLock()

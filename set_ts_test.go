@@ -135,6 +135,22 @@ func TestSet_Has(t *testing.T) {
 	}
 }
 
+func TestSet_HasAny(t *testing.T) {
+	s := New("1", "2", "3", "4")
+
+	if !s.HasAny("1", "2", "5") {
+		t.Error("HasAny: the item 1,2 exist, but 'HasAny' is returning false")
+	}
+
+	if !s.HasAny("1", "2", "3", "4") {
+		t.Error("HasAny: the items all exist, but 'HasAny' is returning false")
+	}
+
+	if s.HasAny("5") {
+		t.Error("HasAny: the item 5 does not exist, but 'HasAny' is returning true")
+	}
+}
+
 func TestSet_Clear(t *testing.T) {
 	s := New()
 	s.Add(1)
